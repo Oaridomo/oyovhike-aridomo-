@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BizOps Pro — Oyovhike Aridomo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Mulish',sans-serif;background:#f5f4f0;color:#1a1a1a;min-height:100vh;padding:24px}
+.app{max-width:900px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 20px rgba(0,0,0,0.08)}
+.portfolio-bar{background:#EEEDFE;padding:12px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #CECBF6}
+.portfolio-text{font-size:12px;color:#3C3489;line-height:1.5}
+.portfolio-text strong{font-weight:700}
+.header{background:#1a1a1a;padding:20px 24px;display:flex;justify-content:space-between;align-items:center}
+.title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.5px}
+.sub{font-size:12px;color:#888;margin-top:3px}
+.ai-badge{background:#534AB7;color:#EEEDFE;font-size:11px;font-weight:600;padding:6px 14px;border-radius:20px}
+.tabs{display:flex;border-bottom:1px solid #eee;background:#fafafa}
+.tab{flex:1;padding:12px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;border:none;background:none;font-family:'Mulish',sans-serif;color:#666;border-bottom:2px solid transparent}
+.tab.active{color:#534AB7;border-bottom-color:#534AB7;background:#fff}
+.view{display:none;padding:20px}
+.view.active{display:block}
+.kanban{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.col-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.7px;color:#888;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.col-count{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700}
+.cnt-todo{background:#EEEDFE;color:#3C3489}
+.cnt-prog{background:#FAEEDA;color:#633806}
+.cnt-done{background:#E1F5EE;color:#085041}
+.task-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;transition:border-color 0.15s}
+.task-card:hover{border-color:#534AB7}
+.card-label{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;display:inline-block;margin-bottom:8px}
+.lbl-ops{background:#EEEDFE;color:#3C3489}
+.lbl-comm{background:#E6F1FB;color:#0C447C}
+.lbl-data{background:#E1F5EE;color:#085041}
+.lbl-hr{background:#FAEEDA;color:#633806}
+.card-title{font-size:13px;font-weight:500;line-height:1.4;margin-bottom:10px}
+.card-footer{display:flex;align-items:center;justify-content:space-between}
+.card-avatar{width:22px;height:22px;border-radius:50%;background:#AFA9EC;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#26215C}
+.card-date{font-size:10px;color:#888}
+.card-prio{width:8px;height:8px;border-radius:50%}
+.prio-h{background:#E24B4A}
+.prio-m{background:#EF9F27}
+.prio-l{background:#97C459}
+.ai-box{border:1px solid #eee;border-radius:12px;overflow:hidden}
+.ai-header{background:#f5f4f0;padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #eee}
+.ai-chip{background:#534AB7;color:#fff;border-radius:20px;font-size:10px;padding:3px 10px;font-weight:700}
+.ai-header-text{font-size:13px;font-weight:500}
+.quick-prompts{display:flex;flex-wrap:wrap;gap:6px;padding:14px}
+.qp-btn{padding:7px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;font-size:12px;cursor:pointer;font-family:'Mulish',sans-serif;color:#555;transition:all 0.15s}
+.qp-btn:hover{background:#EEEDFE;border-color:#534AB7;color:#3C3489}
+.ai-input-row{display:flex;gap:8px;padding:0 14px 14px}
+.ai-input{flex:1;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-family:'Mulish',sans-serif;font-size:13px}
+.ai-input:focus{outline:none;border-color:#534AB7}
+.ai-send{padding:10px 18px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer;font-family:'Mulish',sans-serif;font-weight:600}
+.ai-response{background:#f5f4f0;margin:0 14px 14px;padding:14px;border-radius:10px;font-size:13px;line-height:1.7;display:none}
+.ai-response.show{display:block}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.met-card{background:#f5f4f0;border-radius:10px;padding:14px}
+.met-num{font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-bottom:2px}
+.met-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px}
+.met-trend{font-size:11px;margin-top:4px;font-weight:600}
+.t-up{color:#3B6D11}
+.t-dn{color:#A32D2D}
+.report-list{border:1px solid #eee;border-radius:12px;overflow:hidden}
+.report-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #eee}
+.report-row:last-child{border:none}
+.report-icon{width:36px;height:36px;border-radius:8px;background:#EEEDFE;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.report-name{font-size:13px;font-weight:500}
+.report-meta{font-size:11px;color:#888;margin-top:2px}
+.report-action{font-size:12px;color:#534AB7;font-weight:600;cursor:pointer;margin-left:auto}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="portfolio-bar">
+    <div class="portfolio-text"><strong>Portfolio Project #3 — Business Operations & Administration</strong> · BizOps Pro · Built by Oyovhike Aridomo · Demonstrates: AI tool integration, project coordination, remote EU team operations</div>
+  </div>
+  <div class="header">
+    <div><div class="title">BizOps Pro</div><div class="sub">Remote operations management · EU-focused teams</div></div>
+    <div class="ai-badge">AI Powered</div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('projects',this)">Projects</button>
+    <button class="tab" onclick="showTab('ai',this)">AI Assistant</button>
+    <button class="tab" onclick="showTab('reports',this)">Reports</button>
+  </div>
+  <div class="view active" id="v-projects">
+    <div class="kanban">
+      <div>
+        <div class="col-head">To Do <span class="col-count cnt-todo">3</span></div>
+        <div class="task-card">
+          <span class="card-label lbl-ops">Operations</span>
+          <div class="card-title">Onboard 3 remote contractors — Ireland & Spain</div>
+          <div class="card-footer"><div class="card-prio prio-h"></div><div class="card-avatar">OA</div><span class="card-date">May 12</span></div>
+        </div>
+        <div class="task-card">
+          <span class="card-label lbl-comm">Comms</span>
+          <div class="card-title">Draft GDPR compliance communication for EU update</div>
+          <div class="card-footer"><div class="card-prio prio-m"></div><div class="card-avatar">OA</div><span class="card-date">May 15</span></div>
+        </div>
+        <div class="task-card">
+          <span class="card-label lbl-data">Data</span>
+          <div class="card-title">Analyse Q2 customer satisfaction survey (n=320)</div>
+          <div class="card-footer"><div class="card-prio prio-l"></div><div class="card-avatar">OA</div><span class="card-date">May 20</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="col-head">In Progress <span class="col-count cnt-prog">3</span></div>
+        <div class="task-card">
+          <span class="card-label lbl-hr">HR</span>
+          <div class="card-title">Remote team weekly digest — AI-summarised updates</div>
+          <div class="card-footer"><div class="card-prio prio-h"></div><div class="card-avatar">OA</div><span class="card-date">May 9</span></div>
+        </div>
+        <div class="task-card">
+          <span class="card-label lbl-ops">Operations</span>
+          <div class="card-title">Vendor contract review — European SaaS tools</div>
+          <div class="card-footer"><div class="card-prio prio-m"></div><div class="card-avatar">OA</div><span class="card-date">May 11</span></div>
+        </div>
+        <div class="task-card">
+          <span class="card-label lbl-comm">Comms</span>
+          <div class="card-title">Stakeholder report: Q2 progress deck</div>
+          <div class="card-footer"><div class="card-prio prio-m"></div><div class="card-avatar">OA</div><span class="card-date">May 13</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="col-head">Done <span class="col-count cnt-done">4</span></div>
+        <div class="task-card">
+          <span class="card-label lbl-data">Data</span>
+          <div class="card-title">Monthly KPI dashboard — remote team performance</div>
+          <div class="card-footer"><div class="card-prio prio-l"></div><div class="card-avatar">OA</div><span class="card-date">May 6</span></div>
+        </div>
+        <div class="task-card">
+          <span class="card-label lbl-ops">Operations</span>
+          <div class="card-title">Meeting notes transcription & AI action item extraction</div>
+          <div class="card-footer"><div class="card-prio prio-l"></div><div class="card-avatar">OA</div><span class="card-date">May 5</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="view" id="v-ai">
+    <div class="ai-box">
+      <div class="ai-header"><span class="ai-chip">Claude AI</span><span class="ai-header-text">Business assistant — click a prompt or type your own</span></div>
+      <div class="quick-prompts">
+        <button class="qp-btn" onclick="runPrompt('Summarise the key business priorities for a remote EU team this week in 3 bullet points')">Summarise this week's priorities</button>
+        <button class="qp-btn" onclick="runPrompt('Write a professional email to a European client explaining a 1-week project delay')">Draft client delay email</button>
+        <button class="qp-btn" onclick="runPrompt('Create a short GDPR-compliant data handling policy summary for a small remote team')">GDPR policy summary</button>
+        <button class="qp-btn" onclick="runPrompt('List 5 KPIs a remote business operations coordinator should track weekly and why')">Remote ops KPIs</button>
+      </div>
+      <div class="ai-input-row">
+        <input class="ai-input" id="aiInput" placeholder="Ask the AI anything..." />
+        <button class="ai-send" onclick="runFromInput()">Ask</button>
+      </div>
+      <div class="ai-response" id="aiResp"></div>
+    </div>
+  </div>
+  <div class="view" id="v-reports">
+    <div class="metrics-grid">
+      <div class="met-card"><div class="met-num">24</div><div class="met-lbl">Tasks completed</div><div class="met-trend t-up">↑ 18% vs last month</div></div>
+      <div class="met-card"><div class="met-num">98%</div><div class="met-lbl">On-time delivery</div><div class="met-trend t-up">↑ 3%</div></div>
+      <div class="met-card"><div class="met-num">6</div><div class="met-lbl">Team members</div><div class="met-trend t-dn">↓ 1 on leave</div></div>
+    </div>
+    <div class="report-list">
+      <div class="report-row"><div class="report-icon">📊</div><div><div class="report-name">Q2 Business Operations Report</div><div class="report-meta">AI-generated · May 8, 2025 · 12 pages</div></div><span class="report-action">View ↗</span></div>
+      <div class="report-row"><div class="report-icon">👥</div><div><div class="report-name">Remote Team Performance Summary</div><div class="report-meta">Weekly digest · May 6, 2025 · AI-summarised</div></div><span class="report-action">View ↗</span></div>
+      <div class="report-row"><div class="report-icon">🔒</div><div><div class="report-name">GDPR Compliance Checklist — EU Operations</div><div class="report-meta">Compliance · April 30, 2025 · Reviewed</div></div><span class="report-action">View ↗</span></div>
+      <div class="report-row"><div class="report-icon">✉️</div><div><div class="report-name">Stakeholder Communications Log</div><div class="report-meta">Comms tracker · May 2025 · 34 entries</div></div><span class="report-action">View ↗</span></div>
+    </div>
+  </div>
+</div>
+<script>
+function showTab(name,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('v-'+name).classList.add('active');
+}
+async function runPrompt(prompt){
+  const resp=document.getElementById('aiResp');
+  showTab('ai',document.querySelectorAll('.tab')[1]);
+  resp.className='ai-response show';
+  resp.textContent='AI is thinking...';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'You are a professional business operations assistant for a remote EU team. Be concise and practical. Plain text only.',messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    resp.textContent=data.content?.map(c=>c.text||'').join('')||'No response.';
+  }catch(e){resp.textContent='AI response powered by Claude API. Works when hosted online.';}
+}
+function runFromInput(){const v=document.getElementById('aiInput').value.trim();if(v)runPrompt(v);}
+document.getElementById('aiInput').addEventListener('keydown',e=>{if(e.key==='Enter')runFromInput();});
+</script>
+</body>
+</html>
